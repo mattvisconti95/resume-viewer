@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Document Viewer</title>
+  <meta name="description" content="View PDF and Word (.docx) files privately in your browser. Nothing is uploaded.">
+  <!-- Optional web fonts. If they fail to load, the fallback fonts in style.css are used. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,700&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Document Viewer</div>
+    <div class="file" id="fileInfo" hidden>
+      <span class="file-name" id="fileName"></span>
+      <span class="badge" id="fileType"></span>
+      <span class="file-size" id="fileSize"></span>
+    </div>
+    <div class="top-actions">
+      <button class="btn primary" id="openBtn" type="button">Open file</button>
+      <button class="btn" id="themeBtn" type="button" aria-label="Switch color theme">Theme</button>
+    </div>
+  </header>
+
+  <!-- The viewer area is what goes full screen, so the toolbar stays visible. -->
+  <main class="viewer" id="viewer">
+    <div class="toolbar" id="toolbar" hidden>
+      <div class="tool-group" id="pdfTools" hidden>
+        <button class="btn" id="prevBtn" type="button" aria-label="Previous page">&lsaquo;</button>
+        <label class="page-box">
+          <input id="pageInput" type="number" min="1" value="1" inputmode="numeric" aria-label="Page number">
+          <span id="pageCount">of 1</span>
+        </label>
+        <button class="btn" id="nextBtn" type="button" aria-label="Next page">&rsaquo;</button>
+        <span class="sep"></span>
+        <button class="btn" id="zoomOut" type="button" aria-label="Zoom out">&minus;</button>
+        <span class="zoom-label" id="zoomLabel" aria-live="polite">100%</span>
+        <button class="btn" id="zoomIn" type="button" aria-label="Zoom in">+</button>
+        <button class="btn" id="fitBtn" type="button">Fit width</button>
+      </div>
+      <div class="tool-group" id="docTools" hidden>
+        <button class="btn" id="textSmaller" type="button" aria-label="Smaller text">A&minus;</button>
+        <button class="btn" id="textLarger" type="button" aria-label="Larger text">A+</button>
+        <span class="zoom-label" id="wordCount"></span>
+      </div>
+      <button class="btn push" id="fsBtn" type="button">Full screen</button>
+    </div>
+
+    <div class="stage">
+      <!-- Empty state / drop zone -->
+      <section class="drop" id="dropZone">
+        <h1>Drop a PDF or Word file here</h1>
+        <p>Supports .pdf and .docx. Files open on this device and are never uploaded.</p>
+        <button class="btn primary big" id="chooseBtn" type="button">Choose a file</button>
+      </section>
+
+      <!-- Loading and error states -->
+      <section class="message" id="loading" hidden><div class="spinner"></div><p id="loadingText">Opening file&hellip;</p></section>
+      <section class="message error" id="error" hidden role="alert">
+        <h2 id="errorTitle">This file couldn't be opened</h2>
+        <p id="errorText"></p>
+        <button class="btn primary" id="retryBtn" type="button">Choose another file</button>
+      </section>
+
+      <!-- Viewers -->
+      <div class="scroller" id="pdfView" hidden tabindex="0" aria-label="PDF pages"><div class="pages" id="pages"></div></div>
+      <div class="scroller" id="docView" hidden tabindex="0" aria-label="Document"><article class="sheet" id="sheet"></article></div>
+    </div>
+  </main>
+
+  <div class="overlay" id="overlay" hidden>Drop to open</div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <input type="file" id="fileInput" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+
+  <script src="app.js"></script>
+</body>
+</html>

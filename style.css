@@ -1,0 +1,100 @@
+/* Colors live in variables so light/dark themes only change these values. */
+:root {
+  --desk: #dde1e6; --bar: #f6f7f9; --line: #c8cdd5;
+  --ink: #182030; --muted: #566073;
+  --accent: #ffd23f; --on-accent: #182030; --focus: #2440d6;
+  --sheet: #ffffff; --sheet-ink: #1c2230;
+  --font-ui: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-doc: "Source Serif 4", Georgia, "Times New Roman", serif;
+}
+[data-theme="dark"] {
+  --desk: #0f1217; --bar: #171b22; --line: #2b323e;
+  --ink: #e6e9ef; --muted: #98a1b3; --focus: #8fa3ff;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; }
+body {
+  display: flex; flex-direction: column;
+  background: var(--desk); color: var(--ink);
+  font: 16px/1.5 var(--font-ui);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+/* Top bar */
+.topbar { display: flex; align-items: center; gap: 16px; padding: 10px 16px; background: var(--bar); border-bottom: 1px solid var(--line); }
+.brand { font-weight: 700; white-space: nowrap; }
+.file { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+.file-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.file-size { color: var(--muted); font-size: .875rem; white-space: nowrap; }
+.badge { background: var(--ink); color: var(--bar); border-radius: 4px; padding: 0 8px; font-size: .75rem; font-weight: 700; }
+.top-actions { display: flex; gap: 8px; margin-left: auto; }
+
+/* Buttons */
+.btn {
+  font: inherit; font-weight: 600; color: var(--ink); background: transparent;
+  border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px;
+  min-height: 36px; min-width: 36px; cursor: pointer; white-space: nowrap;
+}
+.btn:hover { border-color: var(--ink); }
+.btn.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn.big { padding: 12px 24px; font-size: 1.05rem; }
+
+/* Toolbar */
+.viewer { flex: 1; min-height: 0; display: flex; flex-direction: column; background: var(--desk); }
+.toolbar { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: var(--bar); border-bottom: 1px solid var(--line); overflow-x: auto; }
+.tool-group { display: flex; align-items: center; gap: 8px; }
+.push { margin-left: auto; }
+.sep { width: 1px; height: 24px; background: var(--line); margin: 0 4px; }
+.zoom-label { min-width: 3.2em; text-align: center; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.page-box { display: flex; align-items: center; gap: 6px; color: var(--muted); white-space: nowrap; }
+.page-box input { width: 4.2em; font: inherit; text-align: center; color: var(--ink); background: var(--desk); border: 1px solid var(--line); border-radius: 6px; padding: 5px; min-height: 36px; }
+
+/* Stage holds exactly one of: drop zone, message, PDF, DOCX */
+.stage { flex: 1; min-height: 0; position: relative; display: flex; }
+.stage > * { flex: 1; }
+.drop, .message { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; padding: 24px; }
+.drop { margin: 24px; border: 2px dashed var(--line); border-radius: 12px; }
+.drop h1 { font-size: clamp(1.4rem, 4vw, 2rem); margin: 0; }
+.drop p, .message p { margin: 0; color: var(--muted); max-width: 46ch; }
+.message h2 { margin: 0; }
+.message.error h2 { color: var(--ink); }
+.message.error { border-left: 6px solid var(--accent); margin: 24px; background: var(--bar); border-radius: 8px; }
+body.dragging .drop { border-color: var(--accent); }
+.spinner { width: 32px; height: 32px; border: 4px solid var(--line); border-top-color: var(--ink); border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Scrolling panes */
+.scroller { position: relative; overflow: auto; -webkit-overflow-scrolling: touch; }
+.pages { position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 16px; width: max-content; min-width: 100%; }
+.pdf-page { background: var(--sheet); box-shadow: 0 1px 6px rgb(0 0 0 / .25); flex: none; display: flex; align-items: center; justify-content: center; color: #666; }
+.pdf-page canvas { width: 100%; height: 100%; display: block; }
+
+/* DOCX canvas: a white sheet that stays readable in both themes */
+.sheet { --doc-scale: 1; background: var(--sheet); color: var(--sheet-ink); font: calc(1.05rem * var(--doc-scale))/1.65 var(--font-doc);
+  max-width: 820px; margin: 24px auto; padding: clamp(20px, 6vw, 72px); box-shadow: 0 1px 6px rgb(0 0 0 / .25); overflow-wrap: anywhere; }
+.sheet h1, .sheet h2, .sheet h3, .sheet h4 { font-family: var(--font-ui); line-height: 1.25; margin: 1.4em 0 .5em; }
+.sheet p { margin: 0 0 1em; }
+.sheet img { max-width: 100%; height: auto; }
+.sheet table { border-collapse: collapse; margin: 1em 0; display: block; overflow-x: auto; }
+.sheet td, .sheet th { border: 1px solid #c8cdd5; padding: 6px 10px; vertical-align: top; }
+.sheet a { color: #1f3fc0; }
+.sheet blockquote { margin: 1em 0; padding-left: 1em; border-left: 4px solid #c8cdd5; }
+
+.overlay { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: rgb(15 18 23 / .7); color: #fff; font-size: 1.5rem; font-weight: 700; pointer-events: none; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: var(--bar); padding: 8px 16px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 110; }
+.toast.show { opacity: 1; }
+
+/* Fallback "full screen" for browsers without the Fullscreen API (e.g. iPhone Safari) */
+.viewer.pseudo-fs { position: fixed; inset: 0; z-index: 90; }
+
+@media (max-width: 640px) {
+  .brand { display: none; }
+  .file-size { display: none; }
+  .topbar, .toolbar { padding-left: 10px; padding-right: 10px; }
+  .drop { margin: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2s; } .toast { transition: none; } }
+@media print { .topbar, .toolbar, .toast { display: none !important; } .sheet { box-shadow: none; margin: 0; } body { background: #fff; } }
