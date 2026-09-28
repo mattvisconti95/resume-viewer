@@ -38,6 +38,7 @@ body {
   border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px;
   min-height: 36px; min-width: 36px; cursor: pointer; white-space: nowrap;
 }
+a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 .btn:hover { border-color: var(--ink); }
 .btn.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .btn.big { padding: 12px 24px; font-size: 1.05rem; }

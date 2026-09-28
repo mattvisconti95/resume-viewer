@@ -1,6 +1,14 @@
-# Document Viewer
+# Resume site (Document Viewer)
 
 A private, in-browser viewer for **PDF** and **Word (.docx)** files. Plain HTML, CSS and JavaScript: no build step, no backend, no accounts, no paid services. It costs $0 to run.
+
+## Your resume opens automatically
+
+The site loads `resume.pdf` when it starts, and shows a **Download** button. `resume.docx` is included as the editable original.
+
+**To update your resume:** replace `resume.pdf` with the new PDF (keep the same file name), then re-upload it to your host. For the most accurate layout and fonts, export the PDF from Word (File > Save As > PDF). To change the file name or turn this off, edit `DEFAULT_FILE` and `DEFAULT_NAME` at the top of `app.js`.
+
+**Note:** the auto-open needs the site hosted or run with the local server below. Double-clicking `index.html` still works, but you'll use **Open file** to pick the resume.
 
 ## What's in the folder
 
@@ -8,6 +16,7 @@ A private, in-browser viewer for **PDF** and **Word (.docx)** files. Plain HTML,
 |---|---|
 | `index.html` | The page structure: top bar, toolbar, drop zone, viewer areas. |
 | `style.css` | All the looks: light/dark colors, layout, mobile rules. |
+| `resume.pdf` / `resume.docx` | Your resume: the PDF is what visitors see; the DOCX is your editable copy. |
 | `app.js` | All the behavior: opening files, PDF and DOCX viewing, buttons. Comments explain each section. |
 
 ## Run it on your computer

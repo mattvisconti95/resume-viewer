@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Document Viewer</title>
+  <title>Matthew Visconti - Resume</title>
   <meta name="description" content="View PDF and Word (.docx) files privately in your browser. Nothing is uploaded.">
   <!-- Optional web fonts. If they fail to load, the fallback fonts in style.css are used. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,13 +13,14 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="brand">Document Viewer</div>
+    <div class="brand">Matthew Visconti</div>
     <div class="file" id="fileInfo" hidden>
       <span class="file-name" id="fileName"></span>
       <span class="badge" id="fileType"></span>
       <span class="file-size" id="fileSize"></span>
     </div>
     <div class="top-actions">
+      <a class="btn" id="downloadBtn" href="resume.pdf" download hidden>Download</a>
       <button class="btn primary" id="openBtn" type="button">Open file</button>
       <button class="btn" id="themeBtn" type="button" aria-label="Switch color theme">Theme</button>
     </div>

@@ -3,6 +3,11 @@
    1) Setup and helpers  2) Loading libraries  3) Opening a file
    4) PDF viewer  5) DOCX viewer  6) Buttons, drag-and-drop, theme */
 
+/* ---------- 0) Settings you can change ---------- */
+// The file that opens automatically when the site loads. Set DEFAULT_FILE to "" for an empty drop zone.
+const DEFAULT_FILE = "resume.pdf";
+const DEFAULT_NAME = "Matthew Visconti - Resume.pdf"; // the name shown in the top bar
+
 /* ---------- 1) Setup and helpers ---------- */
 const $ = (id) => document.getElementById(id);
 const state = { token: 0, kind: null, pdf: null, base: null, scale: 1, fit: true, gen: 0, docScale: 1 };
@@ -81,6 +86,7 @@ function sniff(buf, name) {
 async function openFile(file) {
   const token = ++state.token;
   closeDoc();
+  $("downloadBtn").hidden = true;
   show("loading"); $("loadingText").textContent = "Opening " + file.name + "…";
   try {
     const buf = await file.arrayBuffer();
@@ -328,3 +334,22 @@ setTheme(saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" :
 $("themeBtn").onclick = () => setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
 
 show("drop");
+
+// Open the default file (your resume) automatically. This uses fetch(), which needs the site to be
+// hosted or run from a local server; opening index.html by double-click can't do this in most browsers.
+async function loadDefault() {
+  if (!DEFAULT_FILE) return;
+  show("loading"); $("loadingText").textContent = "Loading…";
+  try {
+    const res = await fetch(DEFAULT_FILE);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const blob = await res.blob();
+    const token = state.token + 1;
+    await openFile(new File([blob], DEFAULT_NAME, { type: blob.type }));
+    if (state.token === token && state.kind) { $("downloadBtn").href = DEFAULT_FILE; $("downloadBtn").download = DEFAULT_NAME; $("downloadBtn").hidden = false; }
+  } catch (e) {
+    show("drop");
+    toast("Couldn't load " + DEFAULT_FILE + " automatically. Host the site or run a local server, or use Open file.");
+  }
+}
+loadDefault();
